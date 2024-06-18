@@ -97,7 +97,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
 此处分析仅涉及算法中的关键步骤，对于其中的细节处理如平面检测、匹配候选点对搜索、二进制描述符相似度计算等不作详细展开。算法流程图如下：
 
-![流程图](/LTAOM/pic/LTAOM.jpg "picture")
+![流程图](./pic/LTAOM.jpg "picture")
 
 ## 3. 算法调试过程中遇到的问题及其解决
 
