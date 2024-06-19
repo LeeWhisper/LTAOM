@@ -135,7 +135,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
 4. 使用2024-03-17-00-27-08.bag建图时，雷达点云数量过少的问题
 
-    FAST-LIO在处理点云时，和会对点云中的tag字段进行筛选，导致大部分点云被滤除
+    FAST-LIO在处理点云时，会对点云中的tag字段进行筛选，导致大部分点云被滤除
     
     preprocess.cpp
     ```c++
@@ -159,6 +159,8 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
     ```
     但是原始mid360雷达的点云数据中，该字段值的置信度为0才是优，修改代码，以导入所有点云进行建图。
 
+    其中关于tag字段的介绍如下：
+    ![tag字段介绍](./pic/tag.png)
 
 ## 4. 主要参数介绍
 
