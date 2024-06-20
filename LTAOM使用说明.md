@@ -1,0 +1,54 @@
+# LTAOM使用说明记录
+
+## 机器狗
+
+### ubuntu下使用
+
+1. WIFI连接：WiFi名称：`X30*****`（请查看机器狗序列号），WiFi密码为:`12345678`   
+2. VNC连接：命令：`remmina`，输入主机IP：`192.168.1.106`，密码：`123456`   
+3. SCP传输文件：`scp 文件 ysc@192.168.1.106:/home/ysc/`
+
+## 指定库安装
+
+将LTAOM需要的经过源码改动的GTSAM4.0.3安装至指定目录下
+
+```
+cd gtsam-4.0.3
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/home/(工作空间下的build文件) ..
+sudo make install
+```
+
+## 启动
+
+livox雷达  
+
+启动fast-lio建图程序
+
+``` 
+roslaunch loop_optimization run_all_avia.launch 
+```   
+
+启动回环检测节点
+
+```
+rosrun loop_optimization loop_optimization_node
+```
+
+## 调参
+
+文件`src/LTAOM/STD/src/loop_detection.cpp`第76行中
+
+``` C++
+double position_threshold = 0.1; // 构建子图的距离阈值
+double rotation_threshold = DEG2RAD(5); // 构建子图的角度阈值
+```
+
+如果需要保存关键帧地图，请取消文件`src/LTAOM/STD/src/loop_detection.cpp`第840行的注释，并在保存目录下新建`keyframes`文件夹
+
+``` C++
+std::string pcd_name = save_directory + "/keyframes/" + "lcd_rawcloud" + std::to_string(key_frame_id) + ".pcd";
+pcl::io::savePCDFileBinary(pcd_name, *current_key_cloud);
+```
+
