@@ -176,11 +176,11 @@ preprocess:
     blind: 0.1
 
 mapping:
-    acc_cov: 0.1
-    gyr_cov: 0.1
-    b_acc_cov: 0.2
-    b_gyr_cov: 0.000001
-    fov_degree:    90
+    acc_cov: 0.1 # 加速度计协方差
+    gyr_cov: 0.1 # 陀螺仪协方差
+    b_acc_cov: 0.2 # 加速度计偏置噪声协方差
+    b_gyr_cov: 0.000001 # 陀螺仪偏置噪声协方差
+    fov_degree:    90 # 雷达视野范围
     det_range:     10 # 激光雷达的最大探测范围
     # extrinsic_T: [ -0.5165, 0.02326, -0.0284 ]
     extrinsic_T: [ -0.0367, 0.0, -0.1186] #外参
