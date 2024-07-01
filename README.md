@@ -303,7 +303,9 @@ gt_file_style: 0
 除系统环境外，均提供库源码压缩包，由于LTAOM需要更改gtsam源码，所以建议直接使用文件内压缩包安装（第三方库压缩文件存放于[百度网盘](https://pan.baidu.com/s/1eRoot9EJJ-ItPyU-qKmB7Q?pwd=zssf)中）
 
 1. Ubuntu 20.04
+
 2. ROS noetic
+
 3. ceres 1.14.0
     
     ```
@@ -329,12 +331,13 @@ gt_file_style: 0
    解压至/home目录下即可，不用编译
 
 6. 在工作空间下新建logs/keyframes目录
+
 7. 编译工作空间
 
     ```
-    cd ~/ws_LTAOM
+    cd ~/LTAOM_ws
     catkin_make
-    source ~/catkin_ws/devel/setup.bash
+    source ~/LTAOM_ws/devel/setup.bash
     ```
 
 ### 5.2 建图流程
