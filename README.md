@@ -136,7 +136,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
         PointField('ring', 20, PointField.UINT16, 1)]
     ```
 
-    方法二：修改LTAOM中的elodyne点云格式
+    方法二：修改LTAOM中的elodyne点云格式[preprocess.h](./FAST_LIO/src/preprocess.h)
 
     ```c++
     namespace velodyne_ros
@@ -164,7 +164,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
     FAST-LIO在处理点云时，会对点云中的tag字段进行筛选，导致大部分点云被滤除
     
-    preprocess.cpp 约75行处
+    [preprocess.cpp](./FAST_LIO/src/preprocess.cpp) 约75行处
     ``` c++ 
     if((msg->points[i].line < N_SCANS) && ((msg->points[i].tag & 0x30) == 0x10)
         || (msg->points[i].tag & 0x30) == 0x00 //mid360
@@ -192,7 +192,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
 ## 4 主要参数介绍
 
-avai.yaml
+[avai.yaml](./FAST_LIO/config/avia.yaml)
 
 ```yaml
 common:
@@ -218,7 +218,7 @@ mapping:
                    0, 0, 1]
 ```
 
-loopopt_config_avia.yaml
+[loopopt_config_avia.yaml](./loop_optimization/launch/loopopt_config_avia.yaml)
 
 ```yaml
 OverlapScoreThr: 0.3 #回环检测得分阈值，大于该阈值进入回环
@@ -233,7 +233,7 @@ PCDSaveStep: 10
 PubCorrectedMap: true ## Online pub corrected full map with a frequency
 ```
 
-config_avia.yaml
+[config_avia.yaml](./STD/config/config_avia.yaml)
 
 ```yaml
 %YAML:1.0
