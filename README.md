@@ -300,7 +300,7 @@ gt_file_style: 0
 
 ### 5.1 环境及文件配置
 
-除系统环境外，均提供库源码压缩包，由于LTAOM需要更改gtsam源码，所以建议直接使用文件内压缩包安装
+除系统环境外，均提供库源码压缩包，由于LTAOM需要更改gtsam源码，所以建议直接使用文件内压缩包安装（第三方库压缩文件存放于[百度网盘](https://pan.baidu.com/s/1eRoot9EJJ-ItPyU-qKmB7Q?pwd=zssf)中）
 
 1. Ubuntu 20.04
 2. ROS noetic
