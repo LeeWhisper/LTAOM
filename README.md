@@ -329,6 +329,13 @@ gt_file_style: 0
    解压至/home目录下即可，不用编译
 
 6. 在工作空间下新建logs/keyframes目录
+7. 编译工作空间
+
+    ```
+    cd ~/ws_LTAOM
+    catkin_make
+    source ~/catkin_ws/devel/setup.bash
+    ```
 
 ### 5.2 建图流程
 
