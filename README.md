@@ -158,7 +158,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
 3. 关于NCLT数据集2013-01-10建图发生飘移
    
-   run_all_nclt.launch文件对应的velody16.yaml中存在两个外参，启用第二个明显改善建图效果。
+   run_all_nclt.launch文件对应的[velody16.yaml](./FAST_LIO/config/velody16.yaml)中存在两个外参，启用第二个明显改善建图效果。
 
 4. 使用2024-03-17-00-27-08.bag建图时，雷达点云数量过少的问题
 
