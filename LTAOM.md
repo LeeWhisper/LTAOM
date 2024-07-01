@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="auto-number-title.css" />
-
 # LTAOM
 
 - [LTAOM](#ltaom)
@@ -17,6 +15,10 @@
   - [算法流程介绍](#算法流程介绍)
   - [算法调试过程中遇到的问题及其解决](#算法调试过程中遇到的问题及其解决)
   - [主要参数介绍](#主要参数介绍)
+  - [使用说明](#使用说明)
+    - [环境及文件配置](#环境及文件配置)
+    - [建图流程](#建图流程)
+  - [实验结果](#实验结果)
 
 ## LTAOM框架介绍
 
@@ -113,24 +115,18 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
 此处分析仅涉及算法中的关键步骤，对于其中的细节处理如平面检测、匹配候选点对搜索、二进制描述符相似度计算等不作详细展开。算法流程图如下：
 
-![流程图](./pic/LTAOM.jpg "picture")
+![流程图](./pic/LTAOM.png "picture")
 
 ## 算法调试过程中遇到的问题及其解决
 
 1. 问题：运行数据集NCLT的velodyne点云格式报错`Failed to find match for field ‘t’`
    
-   原因：LTAOM中自定义的velodyne_ros::point数据格式为
-    ```c++
-    struct EIGEN_ALIGN16 Point {
-        PCL_ADD_POINT4D;
-        float intensity;
-        uint32_t t;
-        uint16_t ring;
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW};
-    ```
-    其中的t字段对应sensor_msgs::PointCloud2中的time字段，且为FLOAT类型，导致两者类型不匹配，进而报错。
+   原因：LTAOM中自定义的velodyne_ros::point数据格式中的t字段为`uint32_t`对应sensor_msgs::PointCloud2中的time字段，且为`FLOAT`类型，导致两者类型不匹配，进而报错。
 
-    解决：在原始bin文件转bag的python脚本文件中，修改代码为
+    解决方法二选一（代码中我已经按照方法二改了）：
+    
+    方法一：在原始bin文件转bag的python脚本文件[nclt_data2bag_BIN.py](./scripts/nclt_data2bag_BIN.py)中，修改代码为
+
     ```python
     fields = [PointField('x', 0, PointField.FLOAT32, 1),
         PointField('y', 4, PointField.FLOAT32, 1),
@@ -140,6 +136,21 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
         PointField('ring', 20, PointField.UINT16, 1)]
     ```
 
+    方法二：修改LTAOM中的elodyne点云格式
+
+    ```c++
+    namespace velodyne_ros
+    {
+        struct EIGEN_ALIGN16 Point
+        {
+            PCL_ADD_POINT4D;
+            float intensity;
+            float time;
+            uint16_t ring;
+            EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+        };
+    } // namespace velodyne_ros
+    ```
 
 2. 关于NCLT数据集建图坐标系错误
    
@@ -176,11 +187,13 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
     但是原始mid360雷达的点云数据中，该字段值的置信度为0才是优，修改代码，以导入所有点云进行建图。
 
     其中关于tag字段的介绍如下：
+
     ![tag字段介绍](./pic/tag.png)
 
 ## 主要参数介绍
 
 avai.yaml
+
 ```yaml
 common:
     lid_topic:  "/livox/lidar" # 雷达话题
@@ -206,6 +219,7 @@ mapping:
 ```
 
 loopopt_config_avia.yaml
+
 ```yaml
 OverlapScoreThr: 0.3 #回环检测得分阈值，大于该阈值进入回环
 VoxelSizeForOverlapCalc: 0.2
@@ -220,6 +234,7 @@ PubCorrectedMap: true ## Online pub corrected full map with a frequency
 ```
 
 config_avia.yaml
+
 ```yaml
 %YAML:1.0
 
@@ -233,7 +248,7 @@ plane_detection_thre: 0.01
 plane_merge_normal_thre: 0.1
 plane_merge_dis_thre: 0.3
 voxel_size: 0.5
-voxel_init_num: 10
+voxel_init_num: 10 # 体素点云平面判断的初始阈值
 proj_plane_num: 5
 proj_image_resolution: 0.2
 proj_image_high_inc: 0.1
@@ -280,3 +295,74 @@ T_lidar_to_vehicle: !!opencv-matrix
 
 gt_file_style: 0
 ```
+
+## 使用说明
+
+### 环境及文件配置
+
+除系统环境外，均提供库源码压缩包，由于LTAOM需要更改gtsam源码，所以建议直接使用文件内压缩包安装
+
+1. Ubuntu 20.04
+2. ROS noetic
+3. ceres 1.14.0
+    
+    ```
+    cd ceres-solver-1.14.0
+    mkdir build
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=~/LTAOM_ws/devel ..
+    sudo make install
+    ```
+
+4. gtsam 4.0.3
+
+    ```
+    cd gtsam-4.0.3
+    mkdir build
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=~/LTAOM_ws/devel ..
+    sudo make install
+    ```
+
+5. TBB 2019 Update 9
+   
+   解压至/home目录下即可，不用编译
+
+6. 在工作空间下新建logs/keyframes目录
+
+### 建图流程
+
+livox雷达  
+
+启动fast-lio建图
+
+``` 
+roslaunch loop_optimization run_all_avia.launch 
+```   
+
+启动回环优化节点
+
+```
+rosrun loop_optimization loop_optimization_node
+```
+
+建图完毕后提取角点和面点（注意修改文件夹路径）
+
+```
+rosrun ysc_t loop_optimization_node corner_surface
+```
+
+## 实验结果
+
+bag包数据下LTAOM的建图结果如下：
+
+![bag包建图](./pic/bag包建图.png)
+
+视频：[LTAOM建图示例.mp4](./video/LTAOM建图示例.mp4)
+
+X30实际建图结果如下：
+
+![X30实际建图](./pic/X30实际建图.png)
+
+视频：[LTAOM_X30实机建图.mp4](./video/LTAOM_X30实机建图.mp4)
+
