@@ -151,8 +151,8 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
 
     FAST-LIO在处理点云时，会对点云中的tag字段进行筛选，导致大部分点云被滤除
     
-    preprocess.cpp约75行处
-    ``` c++ {.line-numbers}
+    preprocess.cpp 约75行处
+    ``` c++ 
     if((msg->points[i].line < N_SCANS) && ((msg->points[i].tag & 0x30) == 0x10)
         || (msg->points[i].tag & 0x30) == 0x00 //mid360
         )
