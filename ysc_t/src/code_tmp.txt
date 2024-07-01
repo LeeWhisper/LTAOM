@@ -1,0 +1,66 @@
+struct Smoothness
+{
+    int ind;
+    float value;
+};
+
+bool compareSmoothness(const Smoothness &a, const Smoothness &b)
+{
+    return a.value < b.value;
+}
+
+int main()
+{
+    pcl::PointCloud<PointType> cloud;
+
+    if (pcl::io::loadPCDFile("/home/lzq/ysc_ws/logs/cloud_result.pcd", cloud) == -1)
+    {
+        ROS_ERROR("cannot load pcd file");
+        return 0;
+    }
+
+    int cloudSize = cloud.size();
+    std::vector<float> cloudCurvature(cloudSize);
+    std::vector<Smoothness> cloudSmoothness(cloudSize);
+    std::vector<int> cloudNeighborPicked(cloudSize, 0);
+    std::vector<int> cloudLabel(cloudSize, 0);
+
+    for (int i = 5; i < cloudSize - 5; i++)
+    {
+        float diffX = cloud[i - 5].x + cloud[i - 4].x + cloud[i - 3].x + cloud[i - 2].x + cloud[i - 1].x - 10 * cloud[i].x + cloud[i + 1].x + cloud[i + 2].x + cloud[i + 3].x + cloud[i + 4].x + cloud[i + 5].x;
+        float diffY = cloud[i - 5].y + cloud[i - 4].y + cloud[i - 3].y + cloud[i - 2].y + cloud[i - 1].y - 10 * cloud[i].y + cloud[i + 1].y + cloud[i + 2].y + cloud[i + 3].y + cloud[i + 4].y + cloud[i + 5].y;
+        float diffZ = cloud[i - 5].z + cloud[i - 4].z + cloud[i - 3].z + cloud[i - 2].z + cloud[i - 1].z - 10 * cloud[i].z + cloud[i + 1].z + cloud[i + 2].z + cloud[i + 3].z + cloud[i + 4].z + cloud[i + 5].z;
+
+        cloudCurvature[i] = diffX * diffX + diffY * diffY + diffZ * diffZ;
+
+        cloudSmoothness[i].ind = i;
+        cloudSmoothness[i].value = cloudCurvature[i];
+    }
+
+    // 按曲率排序
+    std::sort(cloudSmoothness.begin(), cloudSmoothness.end(), compareSmoothness);
+
+    pcl::PointCloud<PointType> cornerPoints;
+    pcl::PointCloud<PointType> surfacePoints;
+
+    int cornerPointNum = 20;   // 假设我们取20个角点
+    int surfacePointNum = 100; // 假设我们取100个面点
+
+    // 提取角点
+    for (int i = 0; i < cornerPointNum; i++)
+    {
+        cornerPoints.push_back(cloud.points[cloudSmoothness[cloudSize - 1 - i].ind]);
+    }
+
+    // 提取面点
+    for (int i = 0; i < surfacePointNum; i++)
+    {
+        surfacePoints.push_back(cloud.points[cloudSmoothness[i].ind]);
+    }
+
+    // 输出角点和面点
+    pcl::io::savePCDFile("/home/lzq/ysc_ws/logs/corner.pcd", cornerPoints);
+    pcl::io::savePCDFile("/home/lzq/ysc_ws/logs/surface.pcd", surfacePoints);
+
+    return 0;
+}

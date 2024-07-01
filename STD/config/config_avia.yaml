@@ -1,0 +1,55 @@
+%YAML:1.0
+
+# pre process
+ds_size: 0.2
+useful_corner_num: 100
+stop_skip_enable: 0
+
+# key points
+plane_detection_thre: 0.01 #判断PCA的最小特征值是否为平面
+plane_merge_normal_thre: 0.1
+plane_merge_dis_thre: 0.3
+voxel_size: 0.5
+voxel_init_num: 10
+proj_plane_num: 5
+proj_image_resolution: 0.2
+proj_image_high_inc: 0.1
+proj_dis_min: 0.1
+proj_dis_max: 5
+summary_min_thre: 0.5
+line_filter_enable: 1
+
+# std descriptor
+descriptor_near_num: 15
+descriptor_min_len: 2
+descriptor_max_len: 30
+max_constrait_dis: 2
+similarity_threshold: 0.3 #相似度阈值，大于该阈值进入匹配队列
+triangle_resolution: 0.1
+
+# candidate search
+skip_near_num: 15 #跳过附近子图匹配的数量
+candidate_num: 30 #匹配候选子图的个数
+sub_frame_num: 4 #多少个子图构成关键帧
+icp_threshold: 0.3 #ICP配准阈值，大于该阈值进入回环检测
+ransac_Rt_thr: 1 #RANSAC阈值，大于该阈值进入匹配
+rough_dis_threshold: 0.05 #距离阈值超参数，计算得到dis_threshold = descriptor.triangle_.norm() *rough_dis_threshold_，小于dis_threshold计算相似度
+#0.2 0.5
+normal_threshold: 0.5 #法向量阈值超参数，小于该阈值认为是有用的匹配
+dis_threshold: 2 #距离阈值超参数，小于该阈值认为是有用的匹配，两者均用于几何验证
+
+# result record
+is_kitti: 1
+
+# extrinsic
+T_lidar_to_vehicle: !!opencv-matrix
+  rows: 4
+  cols: 4
+  dt: d
+  data: [1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1]
+# gt file: 0 for kitti, 1 for mulran and cu
+
+gt_file_style: 0

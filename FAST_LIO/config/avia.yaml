@@ -1,0 +1,22 @@
+common:
+    lid_topic:  "/livox/lidar" # 雷达话题
+    imu_topic:  "/imu/data" # IMU话题
+    # imu_topic:  "/livox/imu"
+
+preprocess:
+    lidar_type: 1                # Livox Avia LiDAR
+    scan_line: 4
+    blind: 0.1
+
+mapping:
+    acc_cov: 0.1
+    gyr_cov: 0.1
+    b_acc_cov: 0.2
+    b_gyr_cov: 0.000001
+    fov_degree:    360
+    det_range:     10 # 激光雷达的最大探测范围
+    # extrinsic_T: [ -0.5165, 0.02326, -0.0284 ]
+    extrinsic_T: [ -0.0367, 0.0, -0.1186] #外参
+    extrinsic_R: [ 1, 0, 0,
+                   0, 1, 0,
+                   0, 0, 1]

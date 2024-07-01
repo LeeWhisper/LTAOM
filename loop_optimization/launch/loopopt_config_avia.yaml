@@ -1,0 +1,10 @@
+OverlapScoreThr: 0.3 #回环检测得分阈值，大于该阈值进入回环
+VoxelSizeForOverlapCalc: 0.2
+NumPrKeyPtFactor: 6
+PlaneInlinerRatioThr: 0.5
+AdjKPFCov: [0.000001, 0.000001, 0.000001]
+LCKPFCov: [0.000001, 0.000001, 0.000001]
+MargFCov: [0.000001, 0.000001, 0.000001, 0.0001, 0.0001, 0.0001]
+SavePCD: false
+PCDSaveStep: 10
+PubCorrectedMap: true ## Online pub corrected full map with a frequency
