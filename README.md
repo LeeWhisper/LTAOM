@@ -359,7 +359,7 @@ rosrun loop_optimization loop_optimization_node
 为了适应ROLL定位算法的关键帧地图输入，我们将ROLL中关于角点和面点提取的代码移植到LTAOM算法中，同时为了不浪费mid360如此巨大的扫描范围，代码中默认将mid360的点云数据转为256线的elodyne雷达数据。建图完毕后提取角点和面点（注意修改文件夹路径）
 
 ```
-rosrun ysc_t loop_optimization_node corner_surface
+rosrun ysc_t corner_surface
 ```
 
 ## 6 实验结果
