@@ -186,7 +186,7 @@ $$\text{cloud size ratio}=min{\left(\frac{\text{current pt num}}{\text{target pt
     ```
     但是原始mid360雷达的点云数据中，该字段值的置信度为0才是优，修改代码，以导入所有点云进行建图。
 
-    其中关于tag字段的介绍如下：
+    其中关于[tag字段的介绍](https://terra-1-g.djicdn.com/851d20f7b9f64838a34cd02351370894/Livox/Livox_Mid-360_User_Manual_CHS.pdf)如下：
 
     ![tag字段介绍](./pic/tag.png)
 
