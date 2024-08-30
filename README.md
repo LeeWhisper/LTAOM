@@ -366,6 +366,10 @@ rosrun ysc_t corner_surface
 
 bag包数据下LTAOM的建图结果如下：
 
+   <div align="center">
+   <img src="./gif/LTAOM建图示例.gif" width=100% />
+   </div>
+
 ![bag包建图](./pic/bag包建图.png)
 
 视频：[LTAOM建图示例.mp4](./video/LTAOM建图示例.mp4)
