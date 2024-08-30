@@ -1,6 +1,7 @@
 # LTAOM
 
 - [LTAOM](#ltaom)
+  - [效果展示](#效果展示)
   - [1 LTAOM框架介绍](#1-ltaom框架介绍)
     - [1.1 基于FAST-LIO2的前端里程计](#11-基于fast-lio2的前端里程计)
     - [1.2 基于STD的回环闭合检测](#12-基于std的回环闭合检测)
@@ -19,6 +20,12 @@
     - [5.1 环境及文件配置](#51-环境及文件配置)
     - [5.2 建图流程](#52-建图流程)
   - [6 实验结果](#6-实验结果)
+
+## 效果展示
+
+   <div align="center">
+   <img src="./gif/LTAOM建图示例.gif" width=100% />
+   </div>
 
 ## 1 LTAOM框架介绍
 
@@ -365,10 +372,6 @@ rosrun ysc_t corner_surface
 ## 6 实验结果
 
 bag包数据下LTAOM的建图结果如下：
-
-   <div align="center">
-   <img src="./gif/LTAOM建图示例.gif" width=100% />
-   </div>
 
 ![bag包建图](./pic/bag包建图.png)
 
